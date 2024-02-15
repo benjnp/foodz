@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     maxWidth: '50%',
-    resizeMode: 'cover'
+    resizeMode: 'contain'
   },
   title: {
     fontSize: 18,
