@@ -3,15 +3,16 @@ export type Product = {
   image: string | null;
   name: string;
   price: number;
+  sizes: string[];
 };
 
-export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
+// export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
 export type CartItem = {
-  id: string;
+  // id: string;
   product: Product;
-  product_id: number;
-  size: PizzaSize;
+  // product_id: number;
+  size: string;
   quantity: number;
 };
 
@@ -39,7 +40,7 @@ export type OrderItem = {
   product_id: number;
   products: Product;
   order_id: number;
-  size: PizzaSize;
+  size: string;
   quantity: number;
 };
 
