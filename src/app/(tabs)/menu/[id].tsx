@@ -41,7 +41,7 @@ const productItem = () => {
             )}
           </View>
           <Text style={styles.price}>₱{product.price}</Text>
-          <Button onPress={addToCart} text="Add to Checkout"/> 
+          <Button onPress={addToCart} text="Add to Cart"/> 
         </View>
       )}
     </View>

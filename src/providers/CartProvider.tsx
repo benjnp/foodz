@@ -6,7 +6,7 @@ type CartType = {
     addItem: ( product: Product, size: CartItem['size']) => void,
     addQuantity: ( cartItem: CartItem) => void,
     subtractQuantity: ( cartItem: CartItem) => void,
-
+    totalPrice: number
 }
 
 const CartContext = createContext<CartType>({
@@ -14,7 +14,7 @@ const CartContext = createContext<CartType>({
     addItem: () => {},
     addQuantity: () => {},
     subtractQuantity: () => {},
-
+    totalPrice: 0
 })
 
 
@@ -22,6 +22,7 @@ const CartContext = createContext<CartType>({
 const CartProvider = ({children}: PropsWithChildren) => {
 
     const [ items, setItems ] = useState<CartItem[]>([])
+    const [ totalPrice, setTotalPrice ] = useState(0)
     let isDuplicate = false
     const addItem = ( product: Product, size: CartItem['size']) => {
         const newCartItem: CartItem = {
@@ -41,30 +42,33 @@ const CartProvider = ({children}: PropsWithChildren) => {
                 isDuplicate = false
                 return [...prevItems, newCartItem]
             })
+        setTotalPrice((prev) => prev + product.price)
     }
 
     const addQuantity = (cartItem: CartItem) => {
-        // console.log("Adding: ", cartItem)
         let tmpItems = items
         items.map((item, index) => {
             if(item.product.id == cartItem.product.id && item.size == cartItem.size)
                 tmpItems[index].quantity++                
         })
         setItems(tmpItems)
+        setTotalPrice((prev) => prev + cartItem.product.price)
     }
 
     const subtractQuantity = (cartItem: CartItem) => {
-        // console.log("Adding: ", cartItem)
         let tmpItems = items
         items.map((item, index) => {
-            if(item.product.id == cartItem.product.id && item.size == cartItem.size && item.quantity > 1) 
-                tmpItems[index].quantity--                
+            if(item.product.id == cartItem.product.id && item.size == cartItem.size && item.quantity > 0) 
+                tmpItems[index].quantity--     
+            if(item.quantity == 0) 
+                tmpItems.splice(index,1)           
         })
         setItems(tmpItems)
+        setTotalPrice((prev) => prev - cartItem.product.price < 0 ? 0 : prev - cartItem.product.price)
     }
 
     return (
-        <CartContext.Provider value={{items, addItem, addQuantity, subtractQuantity}}>
+        <CartContext.Provider value={{items, totalPrice, addItem, addQuantity, subtractQuantity}}>
             {children}
         </CartContext.Provider>
     )

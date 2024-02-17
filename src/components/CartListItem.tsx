@@ -13,50 +13,52 @@ type CartListItemProps = {
 
 const CartListItem = ({ cartItem }: CartListItemProps) => {
   const { addQuantity, subtractQuantity } = useCartContext();
-  const [ quantity, setQuantity ] = useState(cartItem.quantity)
+  const [ qty, setQty ] = useState(cartItem.quantity)
+  const [ isClear, setIsClear ] = useState(false)
+
   return (
+    <>
+    {cartItem.quantity > 0 ? 
     <View style={styles.container}>
-      <Image
-        source={{ uri: cartItem.product.image || defaultPizzaImg }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{cartItem.product.name}</Text>
-        <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>${cartItem.product.price.toFixed(2)}</Text>
-          <Text>Size: {cartItem.size}</Text>
+        <Image
+            source={{ uri: cartItem.product.image || defaultPizzaImg }}
+            style={styles.image}
+            resizeMode="contain"
+        />
+        <View style={{ flex: 1 }}>
+            <Text style={styles.title}>{cartItem.product.name}</Text>
+            <View style={styles.subtitleContainer}>
+            <Text style={styles.price}>${cartItem.product.price.toFixed(2)}</Text>
+            <Text>Size: {cartItem.size}</Text>
+            </View>
         </View>
-      </View>
-      <View style={styles.quantitySelector}>
-        <FontAwesome
-          onPress={() => {
-            subtractQuantity(cartItem)
-
-            if(quantity > 1)
-                setQuantity((prev) => prev-1)
-            else
-                setQuantity(1)
-            }}
-          name="minus"
-          color="gray"
-          style={{ padding: 5 }}
-        />
-
-        {/* <Text style={styles.quantity}>{cartItem.quantity}</Text> */}
-        <Text style={styles.quantity}>{quantity}</Text>
-        <FontAwesome
-          onPress={() => {
-            addQuantity(cartItem)
-
-            setQuantity((prev) => prev+1)
-            }}
-          name="plus"
-          color="gray"
-          style={{ padding: 5 }}
-        />
-      </View>
+        <View style={styles.quantitySelector}>
+            <FontAwesome
+            onPress={() => {
+                subtractQuantity(cartItem)
+                if(qty > 1)
+                    setQty((prev) => prev-1)
+                else
+                    setIsClear(true)
+                }}
+            name="minus"
+            color="gray"
+            style={{ padding: 5 }}
+            />
+            <Text style={styles.quantity}>{qty}</Text>
+            <FontAwesome
+            onPress={() => {          
+                addQuantity(cartItem)
+                setQty((prev) => prev+1)
+                }
+            }
+            name="plus"
+            color="gray"
+            style={{ padding: 5 }}
+            />
+        </View>
     </View>
+    : <Text></Text>}</>
   );
 };
 
