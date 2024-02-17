@@ -45,7 +45,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
             color="gray"
             style={{ padding: 5 }}
             />
-            <Text style={styles.quantity}>{qty}</Text>
+            <Text style={styles.quantity}>{cartItem.quantity}</Text>
             <FontAwesome
             onPress={() => {          
                 addQuantity(cartItem)
